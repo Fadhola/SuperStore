@@ -1,0 +1,496 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+body {
+    background-color: #EEEEEE;  /* Light Grayish background */
+    color: #333;
+    padding: 20px;
+}
+
+/* Color Palette */
+:root {
+    --primary-color: #00ADB5;  
+    --secondary-color: #393E46; 
+    --accent-color: #222831;    
+    --neutral-light: #EEEEEE;   
+    --neutral-dark: #000;      
+}
+
+/* Gaya untuk layar loading */
+#loadingScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+/* Gaya untuk spinner */
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+/* Animasi spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Navbar Icons */
+header nav {
+    margin-left: 250px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-icon i {
+    font-size: 30px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+.plus-icon i {
+    font-size: 40px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 10;
+    min-width: 150px;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.user-icon:hover .dropdown-menu {
+    display: block;
+}
+
+/* Icon Plus Alignment */
+.plus-icon {
+    position: absolute;
+    right: 20px;
+}
+
+/* Header */
+#header {
+    text-align: center;
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    width: 100%;
+    display: block;
+    font-size: 30px;
+}
+
+.logo span {
+    color: #F4CE14;
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--neutral-dark);
+}
+
+footer p {
+    font-size: 14px;
+}
+
+/* Main Container Adjustments */
+.container {
+    display: flex;
+    margin-left: 250px; 
+    padding: 20px;
+    flex-direction: row;
+    /* max-width: 100vw; */
+}
+/* Style for sidebar and toggle button */
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: var(--neutral-light);
+    border-right: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    z-index: 1100;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+#sidebarToggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    display: none; 
+    transition: left 0.3s ease-in-out;
+}
+
+#sidebarToggle.active {
+    left: 270px;
+}
+
+
+.content {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+/* Filters Section */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Aligns items vertically in the center */
+    margin-bottom: 30px;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 15px; /* Adds consistent spacing between items */
+}
+
+.filters .filter-item {
+    position: relative;
+    flex: 1; /* Allows each item to take equal space */
+    min-width: 150px; /* Sets a minimum width to prevent shrinking too much on smaller screens */
+    max-width: 220px; /* Sets a maximum width for each filter item */
+}
+
+
+.filters .dropdown-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "Poppins", sans-serif;
+}
+
+.dropdown-button::after {
+    content: '▼';
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.filters #filterButton {
+    margin-top: 24px;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    transition: background-color 0.3s;
+}
+
+.filters #filterButton:hover {
+    background-color: var(--accent-color);
+}
+
+/* Dropdown content styling */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: "Poppins", sans-serif;
+}
+
+.dropdown-content .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.dropdown-content .checkbox-container input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.dropdown-content .checkbox-container label {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Show dropdown content when .open is added */
+.dropdown.open .dropdown-content {
+    display: block;
+}
+
+/* Ensure the filters still align correctly when some are removed */
+.filters .filter-item:not(:empty) {
+    flex-grow: 1; /* Allow filter items to expand to fill available space */
+}
+
+/* Summary Section */
+.summary-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.summary-item {
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+    position: relative;
+}
+
+.summary-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    right: 0;
+    height: 80%;
+    width: 1px;
+    background-color: #ddd; /* Color for the divider */
+}
+
+.summary-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.summary-label {
+    font-size: 14px;
+    color: #333;
+}
+
+
+/* Charts Section */
+.chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.chart-wrapper {
+    width: calc(50% - 10px);  
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    /* transition: transform 0.3s ease-in-out; */
+}
+
+.chart-wrapper:hover {
+    transform: translateY(-10px);
+}
+
+.chart-container canvas {
+    width: 100%;
+    height: 100%;
+    /* object-fit: contain; */
+    /* padding: 20px; */
+    /* border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+}
+
+
+/* Tooltip and Interactivity Enhancements */
+.chartjs-tooltip {
+    background-color: var(--primary-color); /* Teal background for the tooltip */
+    color: white; /* White text for contrast */
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.chartjs-tooltip .tooltip-title {
+    font-weight: bold;
+}
+
+
+
+
+/* Map Section */
+#map {
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--neutral-dark);
+}
+
+footer p {
+    font-size: 14px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar.hidden {
+        transform: translateX(-100%);
+    }
+
+    #sidebarToggle {
+        display: block;
+    }
+
+    header nav {
+        margin-left: 30px;
+    }
+
+    .container {
+        flex-direction: column;
+        margin-left: 0;
+    }
+    .filters .filter-item {
+        min-width: 100%;
+    }
+
+    .summary-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        max-width: 100%;
+    }
+
+    .summary-item {
+        width: auto;
+        padding: 10px;
+    }
+
+    .chart-container {
+        flex-direction: column; /* Keeps the charts in one column */
+    }
+
+    .chart-wrapper {
+        width: 100%;
+    }
+
+    .chart-container canvas {
+        max-width: 100%; /* Ensure it takes full width on small screens */
+    }
+}
+
+@media (max-width: 540px) {
+    .filters .filter-item {
+        min-width: 100%;
+    }
+}

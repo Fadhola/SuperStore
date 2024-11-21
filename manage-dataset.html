@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superstore Data Management</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --primary-color: #00ADB5;
+    --secondary-color: #393E46;
+    --accent-color: #222831;
+    --neutral-light: #EEEEEE;
+    --neutral-dark: #000;
+}
+
+body {
+    background-color: var(--neutral-light);
+    color: var(--secondary-color);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+}
+
+h1 {
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 24px;
+    margin: 0;
+    flex: 1;
+}
+
+#header {
+    text-align: center;
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    width: 100%;
+    display: block;
+    font-size: 30px;
+}
+
+.logo span {
+    color: #F4CE14;
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.header-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#backButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 40px;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+#backButton i {
+    margin-right: 5px;
+}
+
+#backButton:hover {
+    color: var(--secondary-color);
+}
+
+
+.upload-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+}
+
+#uploadMessage {
+    margin-top: 15px;
+    padding: 10px 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    border-radius: 5px;
+}
+
+#uploadMessage.success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+#uploadMessage.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+#uploadMessage b {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+#uploadMessage ul {
+    margin: 5px 0 0 20px;
+    padding: 0;
+}
+
+#uploadMessage ul li {
+    list-style-type: disc;
+    margin-left: 15px;
+}
+
+
+
+.table-container {
+    overflow-x: auto;
+    background-color: var(--neutral-light);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+table.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--neutral-light);
+}
+
+table.dataTable thead {
+    background-color: var(--primary-color);
+    color: var(--neutral-light);
+}
+
+table.dataTable tbody tr {
+    background-color: var(--neutral-light);
+    color: var(--accent-color);
+}
+
+/* table.dataTable tbody tr:hover {
+    background-color: var(--neutral-dark);
+    color: var(--neutral-light);
+} */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+.tables-container {
+    margin-top: 20px;
+}
+
+.table-container {
+    margin-bottom: 40px;
+}
+
+table.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--neutral-light);
+}
+
+table.dataTable thead {
+    background-color: var(--primary-color);
+    color: var(--neutral-light);
+}
+
+table.dataTable tbody tr {
+    background-color: var(--neutral-light);
+    color: var(--accent-color);
+}
+/* Gaya untuk layar loading */
+#loadingScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+/* Gaya untuk spinner */
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+/* Animasi spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+</style>
+</head>
+<body>
+    <div id="loadingScreen" class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="container">
+        <div class="header-section">
+            <a href="javascript:history.back()" id="backButton"><i class="fas fa-arrow-left"></i></a>
+            <h1><a id="header" class="logo">Super<span>Store</span></a> Data Management</h1>
+        </div>
+        <div class="upload-section">
+            <input type="file" id="fileInput" accept=".csv, .json">
+            <button id="uploadBtn">Upload Data</button>
+            <p id="uploadMessage"></p>
+        </div>
+
+        <div id="tablesContainer" class="tables-container">
+            <!-- Tabel akan ditambahkan secara dinamis berdasarkan tahun -->
+        </div>
+    </div>
+
+    <!-- Modal for editing record -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Record</h2>
+            <form id="editForm">
+                <div id="editFields"></div>
+                <button type="submit" id="saveEditBtn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script>
+        $(document).ready(function() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const uploadMessage = document.getElementById('uploadMessage');
+            const requiredHeaders = ["Row ID", "Order ID", "Order Date", "Ship Date", "Ship Mode", "Customer ID", "Customer Name", "Segment", "Country", "City", "State", "Postal Code", "Region", "Product ID", "Category", "Sub-Category", "Product Name", "Sales", "Quantity", "Discount", "Profit", "Profit/Quantity"];
+            const tablesContainer = document.getElementById('tablesContainer');
+            let tablesByYear = {};
+        
+            // Modal elements for edit functionality
+            const editModal = document.getElementById('editModal');
+            const closeModal = document.querySelector(".close");
+            const editForm = document.getElementById('editForm');
+            const editFields = document.getElementById('editFields');
+            let editingRow;
+        
+            // Function to fetch and display data with loading screen
+            function fetchData() {
+                document.getElementById('loadingScreen').style.display = 'flex'; // Tampilkan loading
+        
+                fetch('datadummy.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        processData(data); // Memproses data yang sudah didapat
+                    })
+                    .catch(error => console.error('Error fetching data:', error))
+                    .finally(() => {
+                        document.getElementById('loadingScreen').style.display = 'none'; // Sembunyikan loading setelah data selesai diproses
+                    });
+            }
+        
+            // Call fetchData to load initial data and show loading screen
+            fetchData();  // Panggil fungsi fetchData untuk menampilkan loading
+        
+            // Definisikan tipe data yang diharapkan untuk setiap kolom
+            const expectedTypes = {
+                "Row ID": "number",
+                "Order ID": "string",
+                "Order Date": "date",
+                "Ship Date": "date",
+                "Ship Mode": "string",
+                "Customer ID": "string",
+                "Customer Name": "string",
+                "Segment": "string",
+                "Country": "string",
+                "City": "string",
+                "State": "string",
+                "Postal Code": "number",
+                "Region": "string",
+                "Product ID": "string",
+                "Category": "string",
+                "Sub-Category": "string",
+                "Product Name": "string",
+                "Sales": "number",
+                "Quantity": "number",
+                "Discount": "number",
+                "Profit": "number",
+                "Profit/Quantity": "number"
+            };
+
+            // Fungsi untuk memvalidasi tipe data pada setiap baris
+            function validateDataTypes(data) {
+                for (let row of data) {
+                    for (let header of requiredHeaders) {
+                        const value = row[header];
+                        const expectedType = expectedTypes[header];
+
+                        // Validasi berdasarkan tipe data
+                        if (expectedType === "number") {
+                            const numberValue = parseFloat(value.replace(',', '.')); // Konversi koma ke titik
+                            if (isNaN(numberValue)) {
+                                return {
+                                    valid: false,
+                                    message: `Invalid value in column "${header}": Expected number but found "${value}".`
+                                };
+                            }
+                        } else if (expectedType === "string" && typeof value !== "string") {
+                            return {
+                                valid: false,
+                                message: `Invalid value in column "${header}": Expected string but found "${value}".`
+                            };
+                        } else if (expectedType === "date" && isNaN(new Date(value).getTime())) {
+                            return {
+                                valid: false,
+                                message: `Invalid value in column "${header}": Expected date but found "${value}".`
+                            };
+                        }
+                    }
+                }
+                return { valid: true, message: "All data types are correct." };
+            }
+
+
+            // Fungsi untuk memvalidasi header dan tipe data
+            function validateHeadersAndData(data) {
+                const fileHeaders = Object.keys(data[0] || {}).map(header => header.trim().replace(/[,;]+$/, '')); // Normalisasi header
+
+                const missingHeaders = requiredHeaders.filter(header => !fileHeaders.includes(header));
+                const extraHeaders = fileHeaders.filter(header => !requiredHeaders.includes(header));
+
+                const dataValidation = validateDataTypes(data);
+
+                if (missingHeaders.length > 0 || extraHeaders.length > 0 || !dataValidation.valid) {
+                    uploadMessage.innerHTML = `
+                        <b>File headers do not match the required format.</b><br>
+                        <b>Headers in file:</b> ${fileHeaders.join(", ")}<br>
+                        <b>Missing headers:</b> ${missingHeaders.length > 0 ? missingHeaders.join(", ") : "None"}<br>
+                        <b>Unexpected headers:</b> ${extraHeaders.length > 0 ? extraHeaders.join(", ") : "None"}<br>
+                        <b>Data Validation:</b> ${dataValidation.message}
+                    `;
+                    console.log("Headers in file:", fileHeaders);
+                    console.log("Missing headers:", missingHeaders);
+                    console.log("Extra headers:", extraHeaders);
+                    return false;
+                }
+
+                uploadMessage.innerHTML = "<b>File headers and data types match the required format.</b>";
+                return true;
+            }
+
+
+                // Upload and validate data
+                uploadBtn.addEventListener('click', () => {
+                    const file = fileInput.files[0];
+                    if (!file) {
+                        uploadMessage.className = 'error';
+                        uploadMessage.textContent = "Please select a file to upload.";
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        let data;
+                        try {
+                            data = file.name.endsWith('.json')
+                                ? JSON.parse(event.target.result)
+                                : parseCSV(event.target.result);
+
+                            if (validateHeadersAndData(data)) {
+                                uploadMessage.className = 'success';
+                                uploadMessage.textContent = "File uploaded successfully!";
+                                processData(data);
+                            } else {
+                                uploadMessage.className = 'error';
+                            }
+                        } catch (error) {
+                            uploadMessage.className = 'error';
+                            uploadMessage.textContent = `Error parsing file: ${error.message}`;
+                            console.error("Error parsing file:", error);
+                        }
+                    };
+                    reader.readAsText(file);
+                });
+
+
+
+        
+            // Parse CSV to JSON
+            function parseCSV(csvText) {
+                // Hapus karakter BOM jika ada
+                csvText = csvText.replace(/^\uFEFF/, '');
+                
+                // Pisahkan baris berdasarkan newline
+                const rows = csvText.trim().split('\n');
+                
+                // Split headers dan pastikan untuk trimming
+                const headers = rows[0].split(',').map(header => header.trim());
+                
+                console.log("Headers:", headers);  // Log untuk memastikan header yang diterima
+                
+                return rows.slice(1).map((row, rowIndex) => {
+                    // Regex untuk mendeteksi nilai yang dipisahkan koma atau yang dikelilingi tanda kutip
+                    const values = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+                    
+                    // Log untuk melihat setiap baris yang diproses
+                    console.log(`Row ${rowIndex + 1}:`, values);
+                    
+                    // Periksa apakah jumlah nilai sama dengan jumlah header
+                    if (!values || values.length !== headers.length) {
+                        throw new Error(`Row length does not match headers. Row ${rowIndex + 1} has ${values.length} columns, but the header has ${headers.length} columns.`);
+                    }
+
+                    // Mapping nilai ke masing-masing header
+                    return headers.reduce((obj, header, index) => {
+                        let value = values[index]?.trim() || '';
+                        // Hapus tanda kutip ganda jika ada
+                        if (value.startsWith('"') && value.endsWith('"')) {
+                            value = value.slice(1, -1).replace(/""/g, '"');
+                        }
+                        // Ubah nilai numerik dengan koma menjadi format desimal
+                        if (expectedTypes[header] === "number") {
+                            value = value.replace(/,/g, ''); // Hilangkan koma untuk nilai numerik
+                            value = parseFloat(value);
+                        }
+                        obj[header] = value;
+                        return obj;
+                    }, {});
+                });
+            }
+
+
+
+        
+    
+
+
+        
+            // Process data and create tables by year, sorted by year
+            function processData(data) {
+                const years = [];
+
+                // Mengumpulkan tahun dari data
+                data.forEach(row => {
+                    const year = new Date(row["Order Date"]).getFullYear();
+                    if (!years.includes(year)) {
+                        years.push(year);
+                    }
+                });
+
+                // Urutkan tahun secara ascending
+                years.sort((a, b) => a - b);
+
+                // Buat tabel berdasarkan tahun yang sudah diurutkan
+                years.forEach(year => {
+                    createTableForYear(year);
+                    data.forEach(row => {
+                        if (new Date(row["Order Date"]).getFullYear() === year) {
+                            addRowToTable(row, year);
+                        }
+                    });
+                });
+            }
+
+        
+            // Create table for a specific year if it doesn't exist
+            function createTableForYear(year) {
+                const tableContainer = document.createElement('div');
+                tableContainer.classList.add('table-container');
+                tableContainer.innerHTML = `<h2>Data for ${year}</h2><table id="dataTable-${year}" class="display nowrap"><thead><tr>${requiredHeaders.map(header => `<th>${header}</th>`).join('')}<th>Actions</th></tr></thead><tbody></tbody></table>`;
+                tablesContainer.appendChild(tableContainer);
+        
+                // Initialize DataTable
+                tablesByYear[year] = $(`#dataTable-${year}`).DataTable({
+                    scrollX: true,
+                    deferRender: true
+                });
+        
+                // Add click event for edit and delete buttons
+                $(`#dataTable-${year} tbody`).on('click', 'button.editBtn', function () {
+                    editingRow = tablesByYear[year].row($(this).closest('tr'));
+                    openEditModal(editingRow, year);
+                });
+        
+                $(`#dataTable-${year} tbody`).on('click', 'button.deleteBtn', function () {
+                    tablesByYear[year].row($(this).closest('tr')).remove().draw();
+                });
+            }
+        
+            // Add a row to the table for the specified year
+            function addRowToTable(row, year) {
+                const rowData = requiredHeaders.map(header => row[header] || '');
+                tablesByYear[year].row.add([...rowData, `<button class="editBtn">Edit</button> <button class="deleteBtn">Delete</button>`]).draw();
+            }
+        
+            // Open edit modal and populate fields
+            function openEditModal(row, year) {
+                const rowData = row.data();
+                editFields.innerHTML = requiredHeaders.map((header, index) => `
+                    <label>${header}</label>
+                    <input type="text" name="${header}" value="${rowData[index] || ''}">
+                `).join('');
+                
+                editModal.style.display = "block";
+            }
+        
+            // Close modal
+            closeModal.onclick = function() {
+                editModal.style.display = "none";
+            };
+            window.onclick = function(event) {
+                if (event.target === editModal) {
+                    editModal.style.display = "none";
+                }
+            };
+        
+            // Save edited data
+            editForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const formData = Object.fromEntries(new FormData(editForm).entries());
+                
+                requiredHeaders.forEach((header, index) => {
+                    editingRow.data()[index] = formData[header];
+                });
+                
+                editingRow.invalidate().draw();
+                editModal.style.display = "none";
+            });
+        });
+        </script>
+        
+</body>
+</html>
