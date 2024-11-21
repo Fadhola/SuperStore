@@ -1,152 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Superstore Analytics Dashboard</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  </head>
+  <body>
     <div id="loadingScreen" class="loading">
-        <div class="spinner"></div>
+      <div class="spinner"></div>
     </div>
-    
+
     <header>
-        <nav>
-            <!-- Icon User dengan Dropdown Menu -->
-            <div class="nav-item user-icon">
-                <i class="fa-sharp fa-solid fa-user" onclick="toggleUserMenu()">User</i>
-                <div class="dropdown-menu" id="userMenu">
-                    <a href="#profile">Profile</a>
-                    <a href="#settings">Settings</a>
-                    <a href="#logout">Logout</a>
-                </div>
-            </div>
-    
-            <!-- Icon Plus untuk Mengelola Dataset -->
-            <div class="nav-item plus-icon">
-                <a href="manage-dataset.html"><i class="fa-solid fa-square-plus"></i></a>
-            </div>
-        </nav>
+      <nav>
+        <!-- Icon User dengan Dropdown Menu -->
+        <div class="nav-item user-icon">
+          <i class="fa-sharp fa-solid fa-user" onclick="toggleUserMenu()">
+            User
+          </i>
+          <div class="dropdown-menu" id="userMenu">
+            <a href="#profile">Profile</a>
+            <a href="#settings">Settings</a>
+            <a href="#logout">Logout</a>
+          </div>
+        </div>
+
+        <!-- Icon Plus untuk Mengelola Dataset -->
+        <div class="nav-item plus-icon">
+          <a href="manage-dataset.html">
+            <i class="fa-solid fa-square-plus"></i>
+          </a>
+        </div>
+      </nav>
     </header>
 
     <main class="container">
-        <aside class="sidebar">
-            <a id="header" class="logo">Super<span>Store</span></a>
-            <!-- <h1 id="header" class="poppins-bold">Superstore Analytics Dashboard</h1> -->
-            <div class="filters">
-                <div class="filter-item">
-                    <label class="poppins-regular">Select Year:</label>
-                    <div class="dropdown">
-                        <button class="dropdown-button poppins-regular" onclick="toggleDropdown('yearFilter')">All Years</button>
-                        <div id="yearFilter" class="dropdown-content"></div>
-                    </div>
-                </div>
-            
-                <div class="filter-item">
-                    <label class="poppins-regular">Select City:</label>
-                    <div class="dropdown">
-                        <button class="dropdown-button poppins-regular" onclick="toggleDropdown('cityFilter')">All City</button>
-                        <div id="cityFilter" class="dropdown-content"></div>
-                    </div>
-                </div>
-            
-                <div class="filter-item">
-                    <label class="poppins-regular">Select State:</label>
-                    <div class="dropdown">
-                        <button class="dropdown-button poppins-regular" onclick="toggleDropdown('stateFilter')">All States</button>
-                        <div id="stateFilter" class="dropdown-content"></div>
-                    </div>
-                </div>
-            
-                <div class="filter-item">
-                    <label class="poppins-regular">Select Category:</label>
-                    <div class="dropdown">
-                        <button class="dropdown-button poppins-regular" onclick="toggleDropdown('categoryFilter')">All Categories</button>
-                        <div id="categoryFilter" class="dropdown-content"></div>
-                    </div>
-                </div>
-            
-                <div class="filter-item">
-                    <button id="filterButton" class="poppins-medium">Filter</button>
-                </div>
+      <aside class="sidebar">
+        <a id="header" class="logo">
+          Super
+          <span>Store</span>
+        </a>
+        <!-- <h1 id="header" class="poppins-bold">Superstore Analytics Dashboard</h1> -->
+        <div class="filters">
+          <div class="filter-item">
+            <label class="poppins-regular">Select Year:</label>
+            <div class="dropdown">
+              <button
+                class="dropdown-button poppins-regular"
+                onclick="toggleDropdown('yearFilter')"
+              >
+                All Years
+              </button>
+              <div id="yearFilter" class="dropdown-content"></div>
             </div>
-            <div>
-          
-            </div>
-        </aside>
-        <button id="sidebarToggle">☰</button>
+          </div>
 
-        <!-- Main Content -->
-        <div class="content">
-            <div class="summary-container" id="summaryContainer">
-                <div class="summary-item">
-                    <p class="summary-value" id="totalSales"></p>
-                    <p class="summary-label">Total Sales</p>
-                </div>
-                <div class="summary-item">
-                    <p class="summary-value" id="averageDiscount"></p>
-                    <p class="summary-label">Avg. Discount</p>
-                </div>
-                <div class="summary-item">
-                    <p class="summary-value" id="averageSales"></p>
-                    <p class="summary-label">Avg. Sales</p>
-                </div>
-                <div class="summary-item">
-                    <p class="summary-value" id="mostFrequentCustomer"></p>
-                    <p class="summary-label">Top Customer</p>
-                </div>
-                <div class="summary-item">
-                    <p class="summary-value" id="orderDateRange"></p>
-                    <p class="summary-label">Order Date Range</p>
-                </div>
+          <div class="filter-item">
+            <label class="poppins-regular">Select City:</label>
+            <div class="dropdown">
+              <button
+                class="dropdown-button poppins-regular"
+                onclick="toggleDropdown('cityFilter')"
+              >
+                All City
+              </button>
+              <div id="cityFilter" class="dropdown-content"></div>
             </div>
-            
+          </div>
 
-            <div id="map"></div>
-            <div class="chart-container">
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="discountSalesChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="salesProfitQuantityChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="avgDiscountPerYearChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="profitMarginChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="salesByCategoryChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="salesTrendChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="topCitiesChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="shipModeChart"></canvas>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas data-aos="zoom-in" id="segmentChart"></canvas>
-                </div>
+          <div class="filter-item">
+            <label class="poppins-regular">Select State:</label>
+            <div class="dropdown">
+              <button
+                class="dropdown-button poppins-regular"
+                onclick="toggleDropdown('stateFilter')"
+              >
+                All States
+              </button>
+              <div id="stateFilter" class="dropdown-content"></div>
             </div>
-            
+          </div>
+
+          <div class="filter-item">
+            <label class="poppins-regular">Select Category:</label>
+            <div class="dropdown">
+              <button
+                class="dropdown-button poppins-regular"
+                onclick="toggleDropdown('categoryFilter')"
+              >
+                All Categories
+              </button>
+              <div id="categoryFilter" class="dropdown-content"></div>
+            </div>
+          </div>
+
+          <div class="filter-item">
+            <button id="filterButton" class="poppins-medium">Filter</button>
+          </div>
         </div>
+        <div></div>
+      </aside>
+      <button id="sidebarToggle">☰</button>
+
+      <!-- Main Content -->
+      <div class="content">
+        <div class="summary-container" id="summaryContainer">
+          <div class="summary-item">
+            <p class="summary-value" id="totalSales"></p>
+            <p class="summary-label">Total Sales</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-value" id="averageDiscount"></p>
+            <p class="summary-label">Avg. Discount</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-value" id="averageSales"></p>
+            <p class="summary-label">Avg. Sales</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-value" id="mostFrequentCustomer"></p>
+            <p class="summary-label">Top Customer</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-value" id="orderDateRange"></p>
+            <p class="summary-label">Order Date Range</p>
+          </div>
+        </div>
+
+        <div id="map"></div>
+        <div class="chart-container">
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="discountSalesChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="salesProfitQuantityChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="avgDiscountPerYearChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="profitMarginChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="salesByCategoryChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="salesTrendChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="topCitiesChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="shipModeChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas data-aos="zoom-in" id="segmentChart"></canvas>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer>
-        <p class="poppins-regular">&copy; 2024 Superstore Analytics Dashboard</p>
+      <p class="poppins-regular">&copy; 2024 Superstore Analytics Dashboard</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-dragdata@latest/dist/chartjs-plugin-dragdata.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://kit.fontawesome.com/5b600557da.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/5b600557da.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="index.js"></script>
-</body>
+  </body>
 </html>
